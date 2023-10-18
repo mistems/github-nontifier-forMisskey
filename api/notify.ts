@@ -7,24 +7,26 @@ import * as path from "path";
 config()
 
 
-export default async function handler(
+export default function handler(
 	request: VercelRequest,
 	response: VercelResponse,
 ) {
 
 
-	console.log( request.body)
-
 	const text = ""
+	try {
+		console.log( request.body.action || "")
+	}catch (e){
+		console.log(e)
+	}
+	  post(text)
 
-	// await post(text)
 
-
-	response.status(200).json({
-		body: request.body,
-		query: request.query,
-		cookies: request.cookies,
-	});
+	 response.status(200).json({
+		 body: request.body,
+		 query: request.query,
+		 cookies: request.cookies,
+	 });
 }
 
 async function post(text: String){
@@ -34,12 +36,14 @@ async function post(text: String){
 	const visible = process.env.visible
 	const instance = process.env.instance
 
-	await axios.post(path.join(instance , "/create/note/add"), {
+	await axios.post(instance + "/create/note/add", {
 		i: MISSKEY_TOKEN,
 		text,
 		visibility: visible,
 		noExtractMentions: true,
 		noExtractHashtags: true
+	}).catch(e => {
+		console.info(e)
 	})
 }
 
