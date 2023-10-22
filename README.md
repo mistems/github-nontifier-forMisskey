@@ -2,6 +2,8 @@
 
 Githubからの各種通知をMisskeyのに投稿します。
 
+これをserverless対応しました
+https://github.com/tamaina/misskey-github-notifier
 
 ## 必要なもの
 1. このリポジトリのフォーク
