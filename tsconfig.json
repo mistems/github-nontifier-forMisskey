@@ -1,17 +1,14 @@
 {
 	"compilerOptions": {
-		"strict": true,
-		"sourceMap": false,
-		"target": "esnext",
-		"module": "esnext",
-		"moduleResolution": "node",
-		"removeComments": false,
-		"noLib": false,
-		"outDir": "built",
-		"rootDir": ".",
-		"esModuleInterop": true,
+		"target": "es2020",          // コンパイルするECMAScriptのターゲット
+		"module": "commonjs",        // モジュールの種類。Vercelとの互換性のためにcommonjsを使用
+		"moduleResolution": "node",  // Node.jsモジュール解決戦略を使用
+		"esModuleInterop": true,     // ESモジュールとCommonJSモジュールの間の相互運用性を有効にする
+		"strict": true,              // 厳格な型チェックを有効にする
+		"skipLibCheck": true,        // 型定義ファイルの型チェックをスキップする（ビルド速度向上のため）
+		"outDir": "./api",         // コンパイルされたJavaScriptファイルを保存するディレクトリ
+		"rootDir": "./src"           // ソースファイルが存在するディレクトリ
 	},
-	"compileOnSave": false,
 	"include": [
 		"./src/**/*.ts"
 	]
