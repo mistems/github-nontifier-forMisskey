@@ -1,19 +1,16 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-import axios from "axios";
-import { config } from "dotenv";
-import * as path from "path";
+import dotenv from 'dotenv';
+import mi from 'misskey-js';
+//
 
-
-config()
-
+dotenv.config()
 
 export default function handler(
-	request: VercelRequest,
-	response: VercelResponse,
+	request: any,
+	response: any,
 ) {
 
 
-	const text = ""
+	const text = "test"
 	try {
 		console.log( request.body.action || "")
 	}catch (e){
@@ -29,17 +26,19 @@ export default function handler(
 	 });
 }
 
-async function post(text: String){
+async function post(text: string){
 
 	const GH_SECRET = process.env.GH_TOKEN
 	const MISSKEY_TOKEN = process.env.MISSKEY_TOKEN
 	const visible = process.env.visible
 	const instance = process.env.instance
 
-	await axios.post(instance + "/create/note/add", {
-		i: MISSKEY_TOKEN,
+if(!instance) throw new Error("instancce not set")
+
+	const cli = new mi.api.APIClient({origin: instance, credential: MISSKEY_TOKEN})
+	cli.request("notes/create", {
 		text,
-		visibility: visible,
+		visibility: visible as any || "home",
 		noExtractMentions: true,
 		noExtractHashtags: true
 	}).catch(e => {
@@ -48,7 +47,7 @@ async function post(text: String){
 }
 
 
-function push(event){
+function push(event: any){
 	const ref = event.ref;
 	switch (ref) {
 		case 'refs/heads/develop':
@@ -63,7 +62,7 @@ function push(event){
 	}
 }
 
-async function issues(event){
+async function issues(event: any){
 	const issue = event.issue;
 	const action = event.action;
 	let title: string;
@@ -77,7 +76,7 @@ async function issues(event){
 }
 
 
-async function issue_comment(event){
+async function issue_comment(event: any){
 	const issue = event.issue;
 	const comment = event.comment;
 	const action = event.action;
@@ -89,7 +88,7 @@ async function issue_comment(event){
 	await post(text);
 }
 
-async function release(event){
+async function release(event: any){
 	const action = event.action;
 	const release = event.release;
 	let text: string;
@@ -101,20 +100,20 @@ async function release(event){
 }
 
 
-async function watch(event){
+async function watch(event: any){
 	const sender = event.sender;
 	await post(`$[spin ⭐️] Starred by ?[**${sender.login}**](${sender.html_url})`);
 }
 
 
-async function fork(event){
+async function fork(event : any){
 	const sender = event.sender;
 	const repo = event.forkee;
 	await post(`$[spin.y 🍴] ?[Forked](${repo.html_url}) by ?[**${sender.login}**](${sender.html_url})`);
 
 }
 
-async function pullRequest(event) {
+async function pullRequest(event: any) {
 	const { pr, action }  = event
 	let text: string;
 	switch (action) {

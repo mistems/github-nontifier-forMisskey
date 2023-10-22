@@ -1,18 +1,15 @@
 {
 	"compilerOptions": {
-		"noEmitOnError": true,
-		"noImplicitAny": false,
-		"noImplicitReturns": true,
-		"noImplicitThis": true,
-		"noFallthroughCasesInSwitch": true,
-		"experimentalDecorators": true,
+		"strict": true,
 		"sourceMap": false,
-		"target": "es6",
-		"module": "commonjs",
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
 		"removeComments": false,
 		"noLib": false,
 		"outDir": "built",
-		"rootDir": "."
+		"rootDir": ".",
+		"esModuleInterop": true,
 	},
 	"compileOnSave": false,
 	"include": [
