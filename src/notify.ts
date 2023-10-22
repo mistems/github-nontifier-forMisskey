@@ -12,17 +12,46 @@ export default async function handler(
 ) {
 
 
-	const text = "test"
 	try {
-		console.log( request.body.action || "")
+		console.log( request.body.state || "")
+		let ghHeader = request.headers['x-github-event'] as string;
+		switch (ghHeader){
+			case "issues":
+				await issues(request.body)
+				break;
+			case "issue_comment":
+				await issue_comment(request.body)
+				break;
+			case "pull":
+				 await pullRequest(request.body)
+				break;
+			case "push":
+				await push(response.body)
+				break;
+			case "release":
+				await release(response.body)
+				break;
+			case "watch":
+				await watch(request.body)
+				break
+			case "fork":
+				await fork(request.body)
+				break
+
+
+		}
+
 	}catch (e){
 		console.log(e)
 	}
 
-	await post("test")
+
+
+
+	// await post("test")
 
 	response.status(200).json({
-		body: text,
+		body: request.body.action,
 		query: request.query,
 		cookies: request.cookies,
 	});
@@ -49,14 +78,14 @@ async function post(text: string){
 }
 
 
-function push(event: any){
+async function push(event: any){
 	const ref = event.ref;
 	switch (ref) {
 		case 'refs/heads/develop':
 			const pusher = event.pusher;
 			const compare = event.compare;
 			const commits: any[] = event.commits;
-			post([
+			await post([
 				`🆕 Pushed by **${pusher.name}** with ?[${commits.length} commit${commits.length > 1 ? 's' : ''}](${compare}):`,
 				commits.reverse().map(commit => `・[?[${commit.id.substr(0, 7)}](${commit.url})] ${commit.message.split('\n')[0]}`).join('\n'),
 			].join('\n'));
@@ -87,6 +116,7 @@ async function issue_comment(event: any){
 		case 'created': text = `💬 Commented on "${issue.title}": ${comment.user.login} "<plain>${comment.body}</plain>"\n${comment.html_url}`; break;
 		default: return;
 	}
+	console.log(comment)
 	await post(text);
 }
 
