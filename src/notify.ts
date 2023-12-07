@@ -22,7 +22,7 @@ export default async function handler(
 			case "issue_comment":
 				await issue_comment(request.body)
 				break;
-			case "pull_requests":
+			case "pull_request":
 				 await pullRequest(request.body)
 				break;
 			case "push":
