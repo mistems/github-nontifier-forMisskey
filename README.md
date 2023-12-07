@@ -24,6 +24,9 @@ https://github.com/tamaina/misskey-github-notifier
 |MISSKEY_TOKEN|XXXXXXXX|次で発行するトークン|
 
 
+test
+
+
 5. 通知したいリポジトリのGitHubのWebhooksにフックを追加します
 6. フックのSettingsで デプロイしたURL/api/notify を指定します
 7. Content type を Application/jsonにします
