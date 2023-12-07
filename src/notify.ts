@@ -156,7 +156,9 @@ async function pullRequest(event: any) {
 				? `💯 Pull Request Merged!: "${pr.title}"\n${pr.html_url}`
 				: `🚫 Pull Request Closed: "${pr.title}"\n${pr.html_url}`;
 			break;
-		default: return;
+		default: 
+			text = `action is ${action} `
+			;
 	}
 	await post(text);
 }
